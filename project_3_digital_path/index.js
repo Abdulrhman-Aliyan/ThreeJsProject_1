@@ -54,6 +54,7 @@ scene.add(tubeLines); // Add the line mesh to the scene
 const numBoxes = 55 // Number of boxes to create
 const boxSize = 0.2 // Size of the boxes
 const boxGeo = new THREE.BoxGeometry(boxSize, boxSize, boxSize); // Create a box geometry
+const boxLinesArray = [];
 for (let i = 0; i < numBoxes; i++) { // Loop through the number of boxes
     const boxMat= new THREE.MeshBasicMaterial({ 
         color: 0xffffff,
@@ -79,7 +80,7 @@ for (let i = 0; i < numBoxes; i++) { // Loop through the number of boxes
     const boxLines = new THREE.LineSegments(edges, lineMat); // Create a line from the edges geometry and material
     boxLines.position.copy(pos); // Set the box position to the position from the spline
 
-
+    boxLinesArray.push(boxLines); // Add the box lines to the array
     scene.add(boxLines); // Add the line mesh to the scene
 
 }
@@ -107,6 +108,10 @@ function handleResize() {
 
 function animate(t = 0) {
     requestAnimationFrame(animate); // Request the next frame //recursive function
+    boxLinesArray.forEach((boxLines) => { // Loop through the box lines array
+        boxLines.rotation.x += 0.05 * Math.random(); // Rotate the box lines around the x-axis
+        boxLines.rotation.y += 0.05 * Math.random(); // Rotate the box lines around the y-axis
+    });
     handleResize(); // Handle window resize
     updateCamera(t)
     composer.render(scene, camera); // Render the scene from the camera's perspective
